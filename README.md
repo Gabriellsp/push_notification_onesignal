@@ -1,16 +1,27 @@
-# push_notification_onesignal
+# Project's goal
 
-A new Flutter project.
+Project created in Flutter to trigger notifications using OneSignal. The main objective of this project was to test how to receive a notification using OneSignal and how to render a modal within the application for the user when receiving a notification in the foreground or background.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+# Documentation used
 
-A few resources to get you started if this is your first Flutter project:
+- Configuring Firebase (https://documentation.onesignal.com/docs/generate-a-google-server-api-key)
+- Configuring Flutter project for OneSignal (https://documentation.onesignal.com/docs/flutter-sdk-setup)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Environment settings
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[✓]Flutter (Channel stable, 3.3.10, on macOS 13.2 22D49 darwin-x64, locale pt-BR)
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 33.0.0)
+
+[✓] Xcode - develop for iOS and macOS (Xcode 14.2)
+
+[✓] Chrome - develop for the web
+
+[✓] Android Studio (version 2021.3)
+
+[✓] VS Code (version 1.75.1)
+
+[✓] Connected device (3 available)
+
+[✓] HTTP Host Availability
