@@ -10,7 +10,11 @@ class NotificationPage extends StatelessWidget {
         title: const Text(''),
       ),
       body: const Center(
-        child: Text('Notificação aberta!'),
+        child: Padding(
+          padding: EdgeInsets.all(24.0),
+          child: Text(
+              'Página para testar se a notificação será recebida em outras páginas do app!'),
+        ),
       ),
     );
   }

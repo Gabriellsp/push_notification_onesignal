@@ -1,71 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:push_notification_onesignal/notification_page.dart';
+import 'package:push_notification_onesignal/pages/notification_page.dart';
+import 'package:push_notification_onesignal/shared/navigation/navigation_service.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+      title: 'Flutter + OneSignal',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      navigatorKey: NavigationService.navKey,
+      debugShowCheckedModeBanner: false,
+      home: const MyApp()));
   _oneSignalEvents();
 }
 
 void _oneSignalEvents() {
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   OneSignal.shared.setAppId('bca8fe60-1247-4599-bb65-75d7165056d5');
-
   OneSignal.shared
-      .promptUserForPushNotificationPermission()
-      .then((accepted) => {print('Accepted permission: $accepted')});
+      .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+    showDialog(
+      context: NavigationService.navKey.currentContext!,
+      builder: (context) => const Dialog(
+        child: SizedBox(
+            width: 400,
+            height: 250,
+            child: Padding(
+              padding: EdgeInsets.all(24.0),
+              child: Center(
+                  child: Text(
+                      'Função que será executada quando o app recebe uma notificação e o usuário clica sobre esta notificação!')),
+            )),
+      ),
+    );
+  });
 
-  // OneSignal.shared.setNotificationWillShowInForegroundHandler(
-  //     (OSNotificationReceivedEvent event) {
-  //   // Will be called whenever a notification is received in foreground
-  //   // Display Notification, pass null param for not displaying the notification
-  //   event.complete(event.notification);
-  // });
-
-  // OneSignal.shared
-  //     .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-  //   navigatorKey.currentState!.push(
-  //     MaterialPageRoute(
-  //       builder: (context) => const NotificationPage(),
-  //     ),
-  //   );
-  //   // Will be called whenever a notification is opened/button pressed.
-  // });
-
-  // OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {
-  //   // Will be called whenever the permission changes
-  //   // (ie. user taps Allow on the permission prompt in iOS)
-  // });
-
-  // OneSignal.shared
-  //     .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
-  //   // Will be called whenever the subscription changes
-  //   // (ie. user gets registered with OneSignal and gets a user ID)
-  // });
-
-  // OneSignal.shared.setEmailSubscriptionObserver(
-  //     (OSEmailSubscriptionStateChanges emailChanges) {
-  //   // Will be called whenever then user's email subscription changes
-  //   // (ie. OneSignal.setEmail(email) is called and the user gets registered
-  // });
+  OneSignal.shared.setNotificationWillShowInForegroundHandler(
+      (OSNotificationReceivedEvent event) {
+    showDialog(
+      context: NavigationService.navKey.currentContext!,
+      builder: (context) => const Dialog(
+        child: SizedBox(
+            width: 400,
+            height: 250,
+            child: Padding(
+              padding: EdgeInsets.all(24.0),
+              child: Center(
+                  child: Text(
+                      'Função que será executada quando o app recebe uma notificação e o aplicativo está em primeiro plano!')),
+            )),
+      ),
+    );
+  });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var navigatorKey = GlobalKey<NavigatorState>();
-    return MaterialApp(
-      title: 'Flutter Demo',
-      navigatorKey: navigatorKey,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return const MyHomePage(title: 'Flutter + OneSignal');
   }
 }
 
@@ -78,38 +83,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  void _goToNavigationPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const NotificationPage(),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Center(child: Text(widget.title)),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      body: const Center(
+        child: Text(
+          'Dispare a notificação no OneSignal!',
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: _goToNavigationPage,
+        tooltip: 'Go to NavigationPage',
+        child: const Icon(Icons.navigation_rounded),
       ),
     );
   }
